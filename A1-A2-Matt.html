@@ -343,7 +343,7 @@
           <span class="level-badge">A2</span>
         </span>
       </div>
-      <div class="header-sub">32 modules · 128 sessions · ±107 hours</div>
+      <div class="header-sub">32 modules · 128 · ±107 hours</div>
     </div>
     <div class="header-progress">
       <div class="header-pct" id="hdr-pct">0%</div>
@@ -382,7 +382,7 @@ const SESSION_TYPES = [
   {
     letter: "A",
     tags: [
-      {text: "Easy Dutch · 8 min", cls: "tag-p", url: "https://easydutchonline.com/"},
+      {text: "Easy Dutch Podcasts · 8 min", cls: "tag-p", url: "https://easydutchonline.com/"},
       {text: "NOS Nieuws · 9 min", cls: "tag-t", url: "https://nos.nl"},
       {text: "A2 - Lezen · 8 min", cls: "tag-c", url: "https://www.inburgeren.nl/examen-doen/oefenen.jsp"},
     ]
@@ -390,7 +390,7 @@ const SESSION_TYPES = [
   {
     letter: "B",
     tags: [
-      {text: "Inburgering A2-B1 · 4 min", cls: "tag-p", url: "https://inburgering.org/nl/podcasts"},
+      {text: "Easy Dutch · 4 min", cls: "tag-p", url: "https://www.youtube.com/@EasyDutch"},
       {text: "NOS Nieuws · 8 min", cls: "tag-t", url: "https://nos.nl"},
       {text: "Verhalen van de brandweer · 5 min", cls: "tag-a", url: "https://drive.google.com/file/d/1NuA4DWRlgrDuw8D8QLNRxpReBFRW_sFP/view?usp=drive_link"},
       {text: "A2 - Luisteren · 8 min", cls: "tag-c", url: "https://www.inburgeren.nl/examen-doen/oefenen.jsp"},
@@ -581,7 +581,7 @@ for (let mod = 1; mod <= 32; mod++) {
         <span class="ses-num-label">#${sesNum}</span>
       </div>
       <div class="ses-type-col">
-        <div class="ses-letter">Session ${t.letter}</div>
+        <div class="ses-letter">${t.letter}</div>
         <div class="ses-abs">50 min</div>
       </div>
       <div class="ses-content">
@@ -596,7 +596,7 @@ for (let mod = 1; mod <= 32; mod++) {
         <div class="tags">${t.tags.map(tg => `<a href="${tg.url}" target="_blank" class="tag ${tg.cls}" style="text-decoration:none;">${tg.text}</a>`).join('')}</div>
         <div class="hw-section">
           <div class="hw-label">Homework / notes</div>
-          <textarea class="hw-input ${hasNote}" rows="1" placeholder="Notes for this session..." oninput="autoGrow(this)" onchange="saveNote(${mod},${ses},this)">${note}</textarea>
+          <textarea class="hw-input ${hasNote}" rows="1" placeholder="Notes..." oninput="autoGrow(this)" onchange="saveNote(${mod},${ses},this)">${note}</textarea>
         </div>
       </div>
     </div>`;
@@ -607,7 +607,7 @@ for (let mod = 1; mod <= 32; mod++) {
       <div class="mod-num ${done === 4 ? 'complete' : ''}" id="mod-num-${mod}">${mod}</div>
       <div class="mod-info">
         <div class="mod-title">Module ${mod}</div>
-        <div class="mod-sub">4 sessions · 200 minutes</div>
+        <div class="mod-sub">4 · 200 minutes</div>
       </div>
       <div class="mod-right">
         <div class="mod-bar-wrap">
