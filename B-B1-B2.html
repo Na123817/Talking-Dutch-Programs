@@ -612,7 +612,7 @@ for (let mod = 1; mod <= MODULES; mod++) {
         </div>
         <div class="tags">${t.tags.map(tg => `<a href="${tg.url}" target="_blank" class="tag ${tg.cls}" style="text-decoration:none;">${tg.text}</a>`).join('')}</div>
         <div class="hw-section">
-          <div class="hw-label">Homework / notes</div>
+          <div class="hw-label">Notes</div>
           <textarea class="hw-input ${hasNote}" rows="1" placeholder="Notes for this session..." oninput="autoGrow(this)" onchange="saveNote(${mod},${ses},this)">${note}</textarea>
         </div>
       </div>
