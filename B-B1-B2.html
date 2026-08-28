@@ -427,11 +427,29 @@ const WERKBOEKEN = [
   {text: "Nederlands op niveau", url: "https://drive.google.com/file/d/1VnMxxc2_SnKrcbsnOuiO1Ko5fR7tE9qx/view?usp=drive_link"}
 ];
 
-// Business Dutch — fixed in every session
-const ZAKELIJK = [
-  {text: "Module Zakelijke communicatie", url: "https://drive.google.com/file/d/1iZQKPKy9of90G9cwOBxm9WCukYlYrx_W/view?usp=drive_link"},
-  {text: "De juiste toon", url: "https://drive.google.com/file/d/1vdFx5qOzOLqQh2e3vKtyUq7FC1yQRbh0/view?usp=drive_link"}
-];
+// Business Dutch — alternates by session letter (A/C vs B/D)
+const ZAKELIJK = {
+  A: [
+    {text: "Module Zakelijke communicatie", url: "https://drive.google.com/file/d/1iZQKPKy9of90G9cwOBxm9WCukYlYrx_W/view?usp=drive_link"},
+    {text: "Ondernemersplein", url: "https://ondernemersplein.overheid.nl/"},
+    {text: "De zaak", url: "https://www.dezaak.nl/"}
+  ],
+  B: [
+    {text: "De juiste toon", url: "https://drive.google.com/file/d/1vdFx5qOzOLqQh2e3vKtyUq7FC1yQRbh0/view?usp=drive_link"},
+    {text: "Nederlands op kantoor", url: "https://www.youtube.com/@nederlandsopkantoor"},
+    {text: "De ondernemer", url: "https://www.deondernemer.nl/?referrer=https%3A%2F%2Fwww.google.com%2F"}
+  ],
+  C: [
+    {text: "Module Zakelijke communicatie", url: "https://drive.google.com/file/d/1iZQKPKy9of90G9cwOBxm9WCukYlYrx_W/view?usp=drive_link"},
+    {text: "Ondernemersplein", url: "https://ondernemersplein.overheid.nl/"},
+    {text: "De zaak", url: "https://www.dezaak.nl/"}
+  ],
+  D: [
+    {text: "De juiste toon", url: "https://drive.google.com/file/d/1vdFx5qOzOLqQh2e3vKtyUq7FC1yQRbh0/view?usp=drive_link"},
+    {text: "Nederlands op kantoor", url: "https://www.youtube.com/@nederlandsopkantoor"},
+    {text: "De ondernemer", url: "https://www.deondernemer.nl/?referrer=https%3A%2F%2Fwww.google.com%2F"}
+  ]
+};
 
 const TOTAL = 260;
 const MODULES = 65;
@@ -590,7 +608,7 @@ for (let mod = 1; mod <= MODULES; mod++) {
           · 12 min
         </div>
         <div class="fixed-line">
-          ${ZAKELIJK.map(z => `<a href="${z.url}" target="_blank" class="fixed-link">${z.text}</a>`).join(' &nbsp;|&nbsp; ')}
+          ${ZAKELIJK[t.letter].map(z => `<a href="${z.url}" target="_blank" class="fixed-link">${z.text}</a>`).join(' &nbsp;|&nbsp; ')}
         </div>
         <div class="tags">${t.tags.map(tg => `<a href="${tg.url}" target="_blank" class="tag ${tg.cls}" style="text-decoration:none;">${tg.text}</a>`).join('')}</div>
         <div class="hw-section">
