@@ -399,7 +399,7 @@ const SESSION_TYPES = [
     letter: "C",
     tags: [
       {text: "Alledaagse vragen · 8 min", cls: "tag-p", url: "https://podcastluisteren.nl/pod/Alledaagse-Vragen"},
-      {text: "NOS Nieuws · 9 min", cls: "tag-t", url: "https://nos.nl"},
+      {text: "NOS Journaal · 9 min", cls: "tag-t", url: "https://npo.nl/start/serie/nos-journaal-in-makkelijke-taal/afleveringen"},
       {text: "Oefenexamen: schrijven · 8 min", cls: "tag-c", url: "https://nt2-oefenomgeving.facet.onl/facet-openbaar-portaal/oefenen/examens/NT2-II/Schrijven"},
     ]
   },
@@ -415,10 +415,10 @@ const SESSION_TYPES = [
 
 // Grammar — 4 resources, maps 1:1 to session letters A-D
 const GRAMMATICA = [
-  {text: "Van Dale Grammatica + Grammatica in gebruik", parts: [{text: "Van Dale Grammatica", url: "https://drive.google.com/file/d/1cw_7lbItLjiBaVvGcoFpH7KUPOg620KT/view?usp=drive_link"}, {text: "Grammatica in gebruik", url: "https://drive.google.com/file/d/1dD-y1swVoOLASViUkI6cBQ8XBzKoHDYH/view?usp=drive_link"}]},
+  {text: "Van Dale Grammatica + Grammatica Videos", parts: [{text: "Van Dale Grammatica", url: "https://drive.google.com/file/d/1cw_7lbItLjiBaVvGcoFpH7KUPOg620KT/view?usp=drive_link"}, {text: "Grammatica Videos", url: "https://www.youtube.com/@ArnoudKuijpers"}]},
   {text: "Regels voor de officiële spelling", url: "https://drive.google.com/file/d/14ZiBnCheV8Xq9GOG8zhrjNBnYKrmy2g5/view?usp=drive_link"},
   {text: "Schrijven op B2 Niveau", url: "https://drive.google.com/file/d/1Af-QLX0I9dJy6V7Mns3XcfCUuzXd0kch/view?usp=drive_link"},
-  {text: "Dictees", url: "https://onzetaal.nl/taalloket/oefenen-voor-dictees"}
+  {text: "Dictees + Grammatica in gebruik", parts: [{text: "Dictees", url: "https://onzetaal.nl/taalloket/oefenen-voor-dictees"}, {text: "Grammatica in gebruik", url: "https://drive.google.com/file/d/1EPMd0cMuuHdQwd_VQxOLzQ5wnXQlNKNX/view?usp=drive_link"}]}
 ];
 
 // Workbooks — 2 resources, rotate across every session
@@ -573,7 +573,7 @@ for (let mod = 1; mod <= MODULES; mod++) {
         <span class="ses-num-label">#${sesNum}</span>
       </div>
       <div class="ses-type-col">
-        <div class="ses-letter">Session ${t.letter}</div>
+        <div class="ses-letter">${t.letter}</div>
         <div class="ses-abs">50 min</div>
       </div>
       <div class="ses-content">
@@ -585,7 +585,7 @@ for (let mod = 1; mod <= MODULES; mod++) {
         </div>
         <div class="tags">${t.tags.map(tg => `<a href="${tg.url}" target="_blank" class="tag ${tg.cls}" style="text-decoration:none;">${tg.text}</a>`).join('')}</div>
         <div class="hw-section">
-          <div class="hw-label">Homework / notes</div>
+          <div class="hw-label">Notes</div>
           <textarea class="hw-input ${hasNote}" rows="1" placeholder="Notes for this session..." oninput="autoGrow(this)" onchange="saveNote(${mod},${ses},this)">${note}</textarea>
         </div>
       </div>
