@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Talking Dutch B1-B2</title>
+<title>Talking Dutch C1-C2</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -339,17 +339,17 @@
         <span class="cursor-bar"></span>
         Talking Dutch
         <span class="header-level-badges">
-          <span class="level-badge">B1</span>
-          <span class="level-badge">B2</span>
+          <span class="level-badge">C1</span>
+          <span class="level-badge">C2</span>
         </span>
       </div>
-      <div class="header-sub">65 modules · 260 sessions · ±217 hours</div>
+      <div class="header-sub">60 modules · 240 sessions · ±200 hours</div>
     </div>
     <div class="header-progress">
       <div class="header-pct" id="hdr-pct">0%</div>
       <div>
         <div class="header-bar-bg"><div class="header-bar-fill" id="hdr-bar" style="width:0%"></div></div>
-        <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);text-align:right;margin-top:3px;" id="hdr-count">0 / 260</div>
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);text-align:right;margin-top:3px;" id="hdr-count">0 / 240</div>
       </div>
     </div>
   </div>
@@ -359,7 +359,7 @@
 
   <div class="stats">
     <div class="stat-card"><div class="stat-num" id="s-done">0</div><div class="stat-label">Completed</div></div>
-    <div class="stat-card"><div class="stat-num" id="s-left">260</div><div class="stat-label">Remaining</div></div>
+    <div class="stat-card"><div class="stat-num" id="s-left">240</div><div class="stat-label">Remaining</div></div>
     <div class="stat-card"><div class="stat-num" id="s-hours">0h</div><div class="stat-label">Hours done</div></div>
     <div class="stat-card"><div class="stat-num" id="s-modules">0</div><div class="stat-label">Modules done</div></div>
   </div>
@@ -386,92 +386,86 @@
 </main>
 
 <script>
-// Podcasts / News / Trivia+Literature / Practice exams — rotate by session letter A-D
+// Podcasts / Series (NOS) / News+Popular science / Practice exams — rotate by session letter A-D
 const SESSION_TYPES = [
   {
     letter: "A",
     tags: [
-      {text: "Easy Dutch · 8 min", cls: "tag-p", url: "https://easydutchonline.com/"},
-      {text: "NOS Nieuws · 9 min", cls: "tag-t", url: "https://nos.nl"},
-      {text: "Oefenexamen: lezen · 8 min", cls: "tag-c", url: "https://nt2-oefenomgeving.facet.onl/facet-openbaar-portaal/oefenen/examens/NT2-I/Lezen"},
+      {text: "EOS · 9 min", cls: "tag-a", url: "https://www.eoswetenschap.eu/"},
+      {text: "Studytube · 8 min", cls: "tag-a", url: "https://www.youtube.com/@StudytubeYT"},
     ]
   },
   {
     letter: "B",
     tags: [
-      {text: "KNM · 8 min", cls: "tag-a", url: "https://knmoefenen.nl/nl/dashboard"},
-      {text: "De lijst – Marelle Boersma · 9 min", cls: "tag-a", url: "https://drive.google.com/file/d/1FZMnk39aoSk3-_HHcmibkYSNtl5nFDpf/view?usp=drive_link"},
-      {text: "Oefenexamen: luisteren · 8 min", cls: "tag-c", url: "https://nt2-oefenomgeving.facet.onl/facet-openbaar-portaal/oefenen/examens/NT2-I/Luisteren"},
+      {text: "De slimste mens · 9 min", cls: "tag-a", url: "https://npo.nl/start/serie/de-slimste-mens/afleveringen/seizoen-29"},
+      {text: "NRC Bijlagen · 8 min", cls: "tag-a", url: "https://www.nrc.nl/"},
+      {text: "CNaVT · 8 min", cls: "tag-c", url: "https://cnavt.org/"},
     ]
   },
   {
     letter: "C",
     tags: [
-      {text: "Alledaagse vragen · 8 min", cls: "tag-p", url: "https://podcastluisteren.nl/pod/Alledaagse-Vragen"},
-      {text: "NOS Nieuws · 9 min", cls: "tag-t", url: "https://nos.nl"},
-      {text: "Oefenexamen: schrijven · 8 min", cls: "tag-c", url: "https://nt2-oefenomgeving.facet.onl/facet-openbaar-portaal/oefenen/examens/NT2-II/Schrijven"},
+      {text: "Quest · 9 min", cls: "tag-p", url: "https://open.spotify.com/show/2A99d13waj7Vuv56Nc3sFB"},
+      {text: "NOS Journaal · 8 min", cls: "tag-t", url: "https://npo.nl/start/serie/nos-journaal/afleveringen"},
     ]
   },
   {
     letter: "D",
     tags: [
-      {text: "De slimste mens · 10 min", cls: "tag-a", url: "https://npo.nl/start/serie/de-slimste-mens/afleveringen/seizoen-29"},
-      {text: "Inburgering B1 · 8 min", cls: "tag-p", url: "https://inburgering.org/nl/podcasts"},
-      {text: "Oefenexamen: spreken · 15 min", cls: "tag-c", url: "https://nt2-oefenomgeving.facet.onl/facet-openbaar-portaal/oefenen/examens/NT2-II/Spreken"},
+      {text: "NPO Luister · 8 min", cls: "tag-t", url: "https://npo.nl/luister"},
+      {text: "Buitenhof · 9 min", cls: "tag-t", url: "https://www.vpro.nl/buitenhof"},
+      {text: "CNaVT · 8 min", cls: "tag-c", url: "https://cnavt.org/"},
     ]
   },
 ];
 
-// Grammar — 4 resources, maps 1:1 to session letters A-D
-const GRAMMATICA = [
-  {text: "Van Dale Grammatica + Grammatica in gebruik", parts: [{text: "Van Dale Grammatica", url: "https://drive.google.com/file/d/1cw_7lbItLjiBaVvGcoFpH7KUPOg620KT/view?usp=drive_link"}, {text: "Grammatica in gebruik", url: "https://drive.google.com/file/d/1EPMd0cMuuHdQwd_VQxOLzQ5wnXQlNKNX/view?usp=drive_link"}]},
-  {text: "Regels voor de officiële spelling", url: "https://drive.google.com/file/d/14ZiBnCheV8Xq9GOG8zhrjNBnYKrmy2g5/view?usp=drive_link"},
-  {text: "Schrijven op B2 Niveau", url: "https://drive.google.com/file/d/1Af-QLX0I9dJy6V7Mns3XcfCUuzXd0kch/view?usp=drive_link"},
-  {text: "Dictees", url: "https://onzetaal.nl/taalloket/oefenen-voor-dictees"}
-];
-
-// Workbooks — 2 resources, rotate across every session
+// Workbooks/Writing — 2 resources, rotate across every session
 const WERKBOEKEN = [
-  {text: "Nederlands in actie", url: "https://drive.google.com/file/d/1jLGtU6i3ZBP4ZMzobuTUYJ7gJE20vEi4/view?usp=drive_link", audioUrl: "https://www.youtube.com/playlist?list=PLF-qJ8Ed0qHd7ToqP0Jvbq32T8fjeq8PH"},
-  {text: "Nederlands op niveau", url: "https://drive.google.com/file/d/1VnMxxc2_SnKrcbsnOuiO1Ko5fR7tE9qx/view?usp=drive_link"}
+  {text: "Nederlands naar perfectie", url: "https://drive.google.com/file/d/1I_K9c6euNbgna_c_01dxUp_zzK0_Sz4g/view?usp=drive_link"},
+  {text: "Genrespecifiek schrijven in de mens- en maatschappijvakken", url: "https://drive.google.com/file/d/1AGyRnxvWpOt2mobcg8PYTvdycDE0CUy_/view?usp=drive_link"}
 ];
 
-// Business Dutch — alternates by session letter (A/C vs B/D)
-const ZAKELIJK = {
-  A: [
-    {text: "De ondernemer", url: "https://www.deondernemer.nl/?referrer=https%3A%2F%2Fwww.google.com%2F"},
-    {text: "Module Zakelijke communicatie", url: "https://drive.google.com/file/d/1iZQKPKy9of90G9cwOBxm9WCukYlYrx_W/view?usp=drive_link"},
-    {text: "De juiste toon", url: "https://drive.google.com/file/d/1vdFx5qOzOLqQh2e3vKtyUq7FC1yQRbh0/view?usp=drive_link"}
-  ],
-  B: [
-    {text: "Nederlands op kantoor", url: "https://www.youtube.com/@nederlandsopkantoor"},
-    {text: "Ondernemersplein", url: "https://ondernemersplein.overheid.nl/"},
-    {text: "De zaak", url: "https://www.dezaak.nl/"}
-  ],
-  C: [
-    {text: "De ondernemer", url: "https://www.deondernemer.nl/?referrer=https%3A%2F%2Fwww.google.com%2F"},
-    {text: "Module Zakelijke communicatie", url: "https://drive.google.com/file/d/1iZQKPKy9of90G9cwOBxm9WCukYlYrx_W/view?usp=drive_link"},
-    {text: "De juiste toon", url: "https://drive.google.com/file/d/1vdFx5qOzOLqQh2e3vKtyUq7FC1yQRbh0/view?usp=drive_link"}
-  ],
-  D: [
-    {text: "Nederlands op kantoor", url: "https://www.youtube.com/@nederlandsopkantoor"},
-    {text: "Ondernemersplein", url: "https://ondernemersplein.overheid.nl/"},
-    {text: "De zaak", url: "https://www.dezaak.nl/"}
-  ]
-};
+// Grammar — 2 resources, rotate across every session
+const GRAMMATICA = [
+  {parts: [
+    {text: "ANS", url: "https://e-ans.ivdnt.org/topics/pid/topic-15808974804853337"},
+    {text: "Regels voor de officiële spelling", url: "https://drive.google.com/file/d/1l-mYwC5eqhnVcdlUF8l5quT2qe72b5Xv/view?usp=drive_link"}
+  ]},
+  {parts: [
+    {text: "ANS", url: "https://e-ans.ivdnt.org/topics/pid/topic-15808974804853337"},
+    {text: "Regels voor de officiële spelling", url: "https://drive.google.com/file/d/1l-mYwC5eqhnVcdlUF8l5quT2qe72b5Xv/view?usp=drive_link"}
+  ]},
+  {parts: [
+    {text: "ANS", url: "https://e-ans.ivdnt.org/topics/pid/topic-15808974804853337"},
+    {text: "Regels voor de officiële spelling", url: "https://drive.google.com/file/d/1l-mYwC5eqhnVcdlUF8l5quT2qe72b5Xv/view?usp=drive_link"}
+  ]},
+  {parts: [
+    {text: "ANS", url: "https://e-ans.ivdnt.org/topics/pid/topic-15808974804853337"},
+    {text: "Regels voor de officiële spelling", url: "https://drive.google.com/file/d/1l-mYwC5eqhnVcdlUF8l5quT2qe72b5Xv/view?usp=drive_link"}
+  ]}
+];
 
-const TOTAL = 260;
-const MODULES = 65;
+// Linguistics — fixed in every session
+const TAALKUNDE = [
+  {text: "Kris kras door het Nederlands", url: "https://drive.google.com/file/d/1bPfCIfklRYWpwnq_InSj6EBfL5tPuM3g/view?usp=drive_link"},
+  null,
+  {text: "Basisvaardigheden Academisch Schrijven", url: "https://drive.google.com/file/d/1q71EfKbPJKnWRpsd49sOpC-JavOuUdDo/view?usp=drive_link"},
+  null
+];
+
+const TOTAL = 240;
+const MODULES = 60;
 
 let state = {};
-try { state = JSON.parse(localStorage.getItem('td_b1b2_business') || '{}'); } catch(e) {}
+try { state = JSON.parse(localStorage.getItem('td_c1c2_50') || '{}'); } catch(e) {}
 
-function save() { try { localStorage.setItem('td_b1b2_business', JSON.stringify(state)); } catch(e) {} }
+function save() { try { localStorage.setItem('td_c1c2_50', JSON.stringify(state)); } catch(e) {} }
 
 // ---- Google Sheets sync ----
 const SHEET_URL = 'https://script.google.com/macros/s/AKfycbywuYKQWhfMW1GfnOnJWmI7vkk0rZ3YnDj41I2UMjxHaru0Mh1s30jKoesqZyqRvf-Q/exec';
-const STUDENT_KEY = 'td_b1b2_business_student';
-const TRACKER_NAME = 'B1-B2 Business';
+const STUDENT_KEY = 'td_c1c2_student';
+const TRACKER_NAME = 'C1-C2';
 
 function getStudentName() {
   let name = localStorage.getItem(STUDENT_KEY);
@@ -693,14 +687,14 @@ for (let mod = 1; mod <= MODULES; mod++) {
     const t = SESSION_TYPES[ses - 1];
     const sesNum = (mod - 1) * 4 + ses;
     const wb = WERKBOEKEN[(sesNum - 1) % WERKBOEKEN.length];
-    const gr = GRAMMATICA[(ses - 1) % GRAMMATICA.length];
+    const gr = GRAMMATICA[ses - 1];
+    const tk = TAALKUNDE[ses - 1];
     const chkKey = 'chk_' + mod + '_' + ses;
     const noteKey = 'note_' + mod + '_' + ses;
     const checked = state[chkKey] ? 'checked' : '';
     const note = (state[noteKey] || '').replace(/"/g, '&quot;');
     const doneClass = state[chkKey] ? 'done' : '';
     const hasNote = (state[noteKey] || '').trim() ? 'has-note' : '';
-    const wbAudio = wb.audioUrl ? ` <a href="${wb.audioUrl}" target="_blank" class="fixed-link">+ audio</a>` : '';
 
     return `
     <div class="session ${doneClass}" id="ses-${mod}-${ses}">
@@ -714,17 +708,18 @@ for (let mod = 1; mod <= MODULES; mod++) {
       </div>
       <div class="ses-content">
         <div class="fixed-line">
-          <a href="${wb.url}" target="_blank" class="fixed-link">${wb.text}</a>${wbAudio}
-          · 13 min &nbsp;|&nbsp;
-          ${gr.parts ? gr.parts.map(p => `<a href="${p.url}" target="_blank" class="fixed-link">${p.text}</a>`).join(' + ') : `<a href="${gr.url}" target="_blank" class="fixed-link">${gr.text}</a>`}
-          · 12 min
-        </div>
-        <div class="fixed-line">
-          ${ZAKELIJK[t.letter].map(z => `<a href="${z.url}" target="_blank" class="fixed-link">${z.text}</a>`).join(' &nbsp;|&nbsp; ')}
+          <a href="${wb.url}" target="_blank" class="fixed-link">${wb.text}</a>
+          · 10 min &nbsp;|&nbsp;
+          ${gr.parts
+            ? gr.parts.map(p => `<a href="${p.url}" target="_blank" class="fixed-link">${p.text}</a>`).join(' &nbsp;|&nbsp; ')
+            : `<a href="${gr.url}" target="_blank" class="fixed-link">${gr.text}</a>`}
+          · 6 min${tk ? ` &nbsp;|&nbsp;
+          <a href="${tk.url}" target="_blank" class="fixed-link">${tk.text}</a>
+          · 9 min` : ''}
         </div>
         <div class="tags">${t.tags.map(tg => `<a href="${tg.url}" target="_blank" class="tag ${tg.cls}" style="text-decoration:none;">${tg.text}</a>`).join('')}</div>
         <div class="hw-section">
-          <div class="hw-label">Notes</div>
+          <div class="hw-label">Homework / notes</div>
           <textarea class="hw-input ${hasNote}" rows="1" placeholder="Notes for this session..." oninput="autoGrow(this)" onchange="saveNote(${mod},${ses},this)">${note}</textarea>
         </div>
       </div>

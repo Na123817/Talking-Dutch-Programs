@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Talking Dutch B1-B2</title>
+<title>Talking Dutch A1-A2</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -339,17 +339,17 @@
         <span class="cursor-bar"></span>
         Talking Dutch
         <span class="header-level-badges">
-          <span class="level-badge">B1</span>
-          <span class="level-badge">B2</span>
+          <span class="level-badge">A1</span>
+          <span class="level-badge">A2</span>
         </span>
       </div>
-      <div class="header-sub">65 modules · 260 sessions · ±217 hours</div>
+      <div class="header-sub">32 modules · 128 · ±107 hours</div>
     </div>
     <div class="header-progress">
       <div class="header-pct" id="hdr-pct">0%</div>
       <div>
         <div class="header-bar-bg"><div class="header-bar-fill" id="hdr-bar" style="width:0%"></div></div>
-        <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);text-align:right;margin-top:3px;" id="hdr-count">0 / 260</div>
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);text-align:right;margin-top:3px;" id="hdr-count">0 / 128</div>
       </div>
     </div>
   </div>
@@ -359,7 +359,7 @@
 
   <div class="stats">
     <div class="stat-card"><div class="stat-num" id="s-done">0</div><div class="stat-label">Completed</div></div>
-    <div class="stat-card"><div class="stat-num" id="s-left">260</div><div class="stat-label">Remaining</div></div>
+    <div class="stat-card"><div class="stat-num" id="s-left">128</div><div class="stat-label">Remaining</div></div>
     <div class="stat-card"><div class="stat-num" id="s-hours">0h</div><div class="stat-label">Hours done</div></div>
     <div class="stat-card"><div class="stat-num" id="s-modules">0</div><div class="stat-label">Modules done</div></div>
   </div>
@@ -391,87 +391,66 @@ const SESSION_TYPES = [
   {
     letter: "A",
     tags: [
-      {text: "Easy Dutch · 8 min", cls: "tag-p", url: "https://easydutchonline.com/"},
+      {text: "Easy Dutch Podcasts · 8 min", cls: "tag-p", url: "https://easydutchonline.com/"},
       {text: "NOS Nieuws · 9 min", cls: "tag-t", url: "https://nos.nl"},
-      {text: "Oefenexamen: lezen · 8 min", cls: "tag-c", url: "https://nt2-oefenomgeving.facet.onl/facet-openbaar-portaal/oefenen/examens/NT2-I/Lezen"},
+      {text: "Oefenexamen: Lezen - A2 · 8 min", cls: "tag-c", url: "https://www.inburgeren.nl/examen-doen/oefenen.jsp"},
     ]
   },
   {
     letter: "B",
     tags: [
-      {text: "KNM · 8 min", cls: "tag-a", url: "https://knmoefenen.nl/nl/dashboard"},
-      {text: "De lijst – Marelle Boersma · 9 min", cls: "tag-a", url: "https://drive.google.com/file/d/1FZMnk39aoSk3-_HHcmibkYSNtl5nFDpf/view?usp=drive_link"},
-      {text: "Oefenexamen: luisteren · 8 min", cls: "tag-c", url: "https://nt2-oefenomgeving.facet.onl/facet-openbaar-portaal/oefenen/examens/NT2-I/Luisteren"},
+      {text: "Easy Dutch · 4 min", cls: "tag-p", url: "https://www.youtube.com/@EasyDutch"},
+      {text: "Verhalen van de brandweer · 5 min", cls: "tag-a", url: "https://drive.google.com/file/d/1NuA4DWRlgrDuw8D8QLNRxpReBFRW_sFP/view?usp=drive_link"},
+      {text: "Oefenexamen: Luisteren - A2 · 8 min", cls: "tag-c", url: "https://www.inburgeren.nl/examen-doen/oefenen.jsp"},
     ]
   },
   {
     letter: "C",
     tags: [
-      {text: "Alledaagse vragen · 8 min", cls: "tag-p", url: "https://podcastluisteren.nl/pod/Alledaagse-Vragen"},
-      {text: "NOS Nieuws · 9 min", cls: "tag-t", url: "https://nos.nl"},
-      {text: "Oefenexamen: schrijven · 8 min", cls: "tag-c", url: "https://nt2-oefenomgeving.facet.onl/facet-openbaar-portaal/oefenen/examens/NT2-II/Schrijven"},
+      {text: "NOS Journaal · 9 min", cls: "tag-t", url: "https://npo.nl/start/serie/nos-journaal-in-makkelijke-taal/afleveringen"},
+      {text: "KNM · 8 min", cls: "tag-a", url: "https://knmoefenen.nl/en/dashboard"},
+      {text: "Oefenexamen: Schrijven - A2 · 8 min", cls: "tag-c", url: "https://www.inburgeren.nl/examen-doen/oefenen.jsp"},
     ]
   },
   {
     letter: "D",
     tags: [
-      {text: "De slimste mens · 10 min", cls: "tag-a", url: "https://npo.nl/start/serie/de-slimste-mens/afleveringen/seizoen-29"},
-      {text: "Inburgering B1 · 8 min", cls: "tag-p", url: "https://inburgering.org/nl/podcasts"},
-      {text: "Oefenexamen: spreken · 15 min", cls: "tag-c", url: "https://nt2-oefenomgeving.facet.onl/facet-openbaar-portaal/oefenen/examens/NT2-II/Spreken"},
+      {text: "De slimste mens · 8 min", cls: "tag-a", url: "https://npo.nl/start/serie/de-slimste-mens/afleveringen/seizoen-29"},
+      {text: "Oefenexamen: Spreken - A2 · 8 min", cls: "tag-c", url: "https://www.inburgeren.nl/examen-doen/oefenen.jsp"},
     ]
-  },
+  }
 ];
 
-// Grammar — 4 resources, maps 1:1 to session letters A-D
+// Grammar — fixed per session letter: A=Van Dale, B=Dictees, C=Van Dale, D=Regels voor de officiële spelling
 const GRAMMATICA = [
-  {text: "Van Dale Grammatica + Grammatica in gebruik", parts: [{text: "Van Dale Grammatica", url: "https://drive.google.com/file/d/1cw_7lbItLjiBaVvGcoFpH7KUPOg620KT/view?usp=drive_link"}, {text: "Grammatica in gebruik", url: "https://drive.google.com/file/d/1EPMd0cMuuHdQwd_VQxOLzQ5wnXQlNKNX/view?usp=drive_link"}]},
-  {text: "Regels voor de officiële spelling", url: "https://drive.google.com/file/d/14ZiBnCheV8Xq9GOG8zhrjNBnYKrmy2g5/view?usp=drive_link"},
-  {text: "Schrijven op B2 Niveau", url: "https://drive.google.com/file/d/1Af-QLX0I9dJy6V7Mns3XcfCUuzXd0kch/view?usp=drive_link"},
-  {text: "Dictees", url: "https://onzetaal.nl/taalloket/oefenen-voor-dictees"}
+  {text: "Van Dale Grammatica", url: "https://drive.google.com/file/d/1cw_7lbItLjiBaVvGcoFpH7KUPOg620KT/view?usp=drive_link"},
+  {text: "Dictees + Grammatica Videos", parts: [{text: "Dictees", url: "https://onzetaal.nl/taalloket/oefenen-voor-dictees"}, {text: "Grammatica Videos", url: "https://www.youtube.com/@ArnoudKuijpers"}]},
+  {text: "Grammatica in gebruik", url: "https://drive.google.com/file/d/1dD-y1swVoOLASViUkI6cBQ8XBzKoHDYH/view?usp=drive_link"},
+  {text: "Regels voor de officiële spelling", url: "https://drive.google.com/file/d/14ZiBnCheV8Xq9GOG8zhrjNBnYKrmy2g5/view?usp=drive_link"}
 ];
 
-// Workbooks — 2 resources, rotate across every session
+// Workbooks + audio — fixed per session letter: A=Taalcompleet A1+A2, B=Nederlands in actie, C=Taalcompleet A1+A2, D=Nederlands in actie
+const TAALCOMPLEET_A1A2 = {text: "Taalcompleet A1 + A2", parts: [
+  {text: "A1", url: "https://drive.google.com/file/d/14yHMSH-L7dMT6LpecyKwx2-vArN054LB/view?usp=drivesdk"},
+  {text: "A2", url: "https://drive.google.com/file/d/1v1O_4rOmOR5WZRlY0sxH559sxPKt1a2q/view?usp=drive_link", audioUrl: "https://www.youtube.com/watch?v=-VeJ75e-mJI&list=PLl74A1LTuUSUaM9kmbs9jtqIWdkkRfnJ3"}
+]};
+const NEDERLANDS_IN_ACTIE = {text: "Nederlands in actie", url: "https://drive.google.com/file/d/1jLGtU6i3ZBP4ZMzobuTUYJ7gJE20vEi4/view?usp=drive_link", audioUrl: "https://www.youtube.com/playlist?list=PLF-qJ8Ed0qHd7ToqP0Jvbq32T8fjeq8PH"};
 const WERKBOEKEN = [
-  {text: "Nederlands in actie", url: "https://drive.google.com/file/d/1jLGtU6i3ZBP4ZMzobuTUYJ7gJE20vEi4/view?usp=drive_link", audioUrl: "https://www.youtube.com/playlist?list=PLF-qJ8Ed0qHd7ToqP0Jvbq32T8fjeq8PH"},
-  {text: "Nederlands op niveau", url: "https://drive.google.com/file/d/1VnMxxc2_SnKrcbsnOuiO1Ko5fR7tE9qx/view?usp=drive_link"}
+  TAALCOMPLEET_A1A2,
+  NEDERLANDS_IN_ACTIE,
+  TAALCOMPLEET_A1A2,
+  NEDERLANDS_IN_ACTIE
 ];
-
-// Business Dutch — alternates by session letter (A/C vs B/D)
-const ZAKELIJK = {
-  A: [
-    {text: "De ondernemer", url: "https://www.deondernemer.nl/?referrer=https%3A%2F%2Fwww.google.com%2F"},
-    {text: "Module Zakelijke communicatie", url: "https://drive.google.com/file/d/1iZQKPKy9of90G9cwOBxm9WCukYlYrx_W/view?usp=drive_link"},
-    {text: "De juiste toon", url: "https://drive.google.com/file/d/1vdFx5qOzOLqQh2e3vKtyUq7FC1yQRbh0/view?usp=drive_link"}
-  ],
-  B: [
-    {text: "Nederlands op kantoor", url: "https://www.youtube.com/@nederlandsopkantoor"},
-    {text: "Ondernemersplein", url: "https://ondernemersplein.overheid.nl/"},
-    {text: "De zaak", url: "https://www.dezaak.nl/"}
-  ],
-  C: [
-    {text: "De ondernemer", url: "https://www.deondernemer.nl/?referrer=https%3A%2F%2Fwww.google.com%2F"},
-    {text: "Module Zakelijke communicatie", url: "https://drive.google.com/file/d/1iZQKPKy9of90G9cwOBxm9WCukYlYrx_W/view?usp=drive_link"},
-    {text: "De juiste toon", url: "https://drive.google.com/file/d/1vdFx5qOzOLqQh2e3vKtyUq7FC1yQRbh0/view?usp=drive_link"}
-  ],
-  D: [
-    {text: "Nederlands op kantoor", url: "https://www.youtube.com/@nederlandsopkantoor"},
-    {text: "Ondernemersplein", url: "https://ondernemersplein.overheid.nl/"},
-    {text: "De zaak", url: "https://www.dezaak.nl/"}
-  ]
-};
-
-const TOTAL = 260;
-const MODULES = 65;
 
 let state = {};
-try { state = JSON.parse(localStorage.getItem('td_b1b2_business') || '{}'); } catch(e) {}
+try { state = JSON.parse(localStorage.getItem('td_a1a2_50') || '{}'); } catch(e) {}
 
-function save() { try { localStorage.setItem('td_b1b2_business', JSON.stringify(state)); } catch(e) {} }
+function save() { try { localStorage.setItem('td_a1a2_50', JSON.stringify(state)); } catch(e) {} }
 
 // ---- Google Sheets sync ----
 const SHEET_URL = 'https://script.google.com/macros/s/AKfycbywuYKQWhfMW1GfnOnJWmI7vkk0rZ3YnDj41I2UMjxHaru0Mh1s30jKoesqZyqRvf-Q/exec';
-const STUDENT_KEY = 'td_b1b2_business_student';
-const TRACKER_NAME = 'B1-B2 Business';
+const STUDENT_KEY = 'td_a1a2_student';
+const TRACKER_NAME = 'A1-A2';
 
 function getStudentName() {
   let name = localStorage.getItem(STUDENT_KEY);
@@ -568,7 +547,6 @@ function syncAllToSheet() {
     .catch(() => setSyncStatus('Sync failed'));
 }
 
-
 function autoGrow(el) {
   el.style.height = 'auto';
   el.style.height = Math.min(el.scrollHeight, 400) + 'px';
@@ -588,18 +566,18 @@ function getModuleDone(mod) {
 
 function updateGlobal() {
   const done = getDone();
-  const pct = Math.round(done / TOTAL * 100);
+  const pct = Math.round(done / 128 * 100);
   const hours = (done * 50 / 60).toFixed(1);
   let modsDone = 0;
-  for (let m = 1; m <= MODULES; m++) { if (getModuleDone(m) === 4) modsDone++; }
+  for (let m = 1; m <= 32; m++) { if (getModuleDone(m) === 4) modsDone++; }
 
   document.getElementById('s-done').textContent = done;
-  document.getElementById('s-left').textContent = TOTAL - done;
+  document.getElementById('s-left').textContent = 128 - done;
   document.getElementById('s-hours').textContent = hours + 'h';
   document.getElementById('s-modules').textContent = modsDone;
   document.getElementById('hdr-pct').textContent = pct + '%';
   document.getElementById('hdr-bar').style.width = pct + '%';
-  document.getElementById('hdr-count').textContent = done + ' / ' + TOTAL;
+  document.getElementById('hdr-count').textContent = done + ' / 128';
 }
 
 function updateModuleUI(mod) {
@@ -615,7 +593,9 @@ function updateModuleUI(mod) {
     if (done === 4) numEl.classList.add('complete');
     else numEl.classList.remove('complete');
   }
-  if (modEl) modEl.dataset.done = done;
+  if (modEl) {
+    modEl.dataset.done = done;
+  }
 }
 
 function toggleSession(mod, ses, el) {
@@ -631,7 +611,8 @@ function toggleSession(mod, ses, el) {
 }
 
 function saveNote(mod, ses, el) {
-  state['note_' + mod + '_' + ses] = el.value;
+  const key = 'note_' + mod + '_' + ses;
+  state[key] = el.value;
   if (el.value.trim()) el.classList.add('has-note');
   else el.classList.remove('has-note');
   save();
@@ -652,11 +633,11 @@ function toggleModule(mod) {
 let allExpanded = false;
 function toggleAll() {
   allExpanded = !allExpanded;
-  for (let m = 1; m <= MODULES; m++) {
+  for (let m = 1; m <= 32; m++) {
     const body = document.getElementById('body-' + m);
     const chev = document.getElementById('chev-' + m);
-    if (body) body.classList.toggle('open', allExpanded);
-    if (chev) chev.classList.toggle('open', allExpanded);
+    if (body) { body.classList.toggle('open', allExpanded); }
+    if (chev) { chev.classList.toggle('open', allExpanded); }
   }
   document.querySelector('.expand-all').textContent = allExpanded ? 'Collapse all' : 'Expand all';
   if (allExpanded) {
@@ -667,7 +648,7 @@ function toggleAll() {
 function filterModules(type, btn) {
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  for (let m = 1; m <= MODULES; m++) {
+  for (let m = 1; m <= 32; m++) {
     const el = document.getElementById('module-' + m);
     if (!el) continue;
     const done = parseInt(el.dataset.done || 0);
@@ -679,9 +660,10 @@ function filterModules(type, btn) {
   }
 }
 
+// Build DOM
 const container = document.getElementById('modules-container');
 
-for (let mod = 1; mod <= MODULES; mod++) {
+for (let mod = 1; mod <= 32; mod++) {
   const done = getModuleDone(mod);
   const pct = Math.round(done / 4 * 100);
   const modEl = document.createElement('div');
@@ -692,15 +674,14 @@ for (let mod = 1; mod <= MODULES; mod++) {
   const sessionsHTML = [1, 2, 3, 4].map(ses => {
     const t = SESSION_TYPES[ses - 1];
     const sesNum = (mod - 1) * 4 + ses;
-    const wb = WERKBOEKEN[(sesNum - 1) % WERKBOEKEN.length];
-    const gr = GRAMMATICA[(ses - 1) % GRAMMATICA.length];
+    const wb = WERKBOEKEN[ses - 1];
+    const gr = GRAMMATICA[ses - 1];
     const chkKey = 'chk_' + mod + '_' + ses;
     const noteKey = 'note_' + mod + '_' + ses;
     const checked = state[chkKey] ? 'checked' : '';
     const note = (state[noteKey] || '').replace(/"/g, '&quot;');
     const doneClass = state[chkKey] ? 'done' : '';
     const hasNote = (state[noteKey] || '').trim() ? 'has-note' : '';
-    const wbAudio = wb.audioUrl ? ` <a href="${wb.audioUrl}" target="_blank" class="fixed-link">+ audio</a>` : '';
 
     return `
     <div class="session ${doneClass}" id="ses-${mod}-${ses}">
@@ -709,23 +690,22 @@ for (let mod = 1; mod <= MODULES; mod++) {
         <span class="ses-num-label">#${sesNum}</span>
       </div>
       <div class="ses-type-col">
-        <div class="ses-letter">Session ${t.letter}</div>
+        <div class="ses-letter">${t.letter}</div>
         <div class="ses-abs">50 min</div>
       </div>
       <div class="ses-content">
         <div class="fixed-line">
-          <a href="${wb.url}" target="_blank" class="fixed-link">${wb.text}</a>${wbAudio}
-          · 13 min &nbsp;|&nbsp;
+          ${wb.parts
+            ? wb.parts.map(p => `<a href="${p.url}" target="_blank" class="fixed-link">Taalcompleet ${p.text}</a>${p.audioUrl ? ` <a href="${p.audioUrl}" target="_blank" class="fixed-link">+ audio</a>` : ''}`).join(' &nbsp;|&nbsp; ')
+            : `<a href="${wb.url}" target="_blank" class="fixed-link">${wb.text}</a>${wb.audioUrl ? ` <a href="${wb.audioUrl}" target="_blank" class="fixed-link">+ audio</a>` : ''}`}
+          · 15 min &nbsp;|&nbsp;
           ${gr.parts ? gr.parts.map(p => `<a href="${p.url}" target="_blank" class="fixed-link">${p.text}</a>`).join(' + ') : `<a href="${gr.url}" target="_blank" class="fixed-link">${gr.text}</a>`}
-          · 12 min
-        </div>
-        <div class="fixed-line">
-          ${ZAKELIJK[t.letter].map(z => `<a href="${z.url}" target="_blank" class="fixed-link">${z.text}</a>`).join(' &nbsp;|&nbsp; ')}
+          · 10 min
         </div>
         <div class="tags">${t.tags.map(tg => `<a href="${tg.url}" target="_blank" class="tag ${tg.cls}" style="text-decoration:none;">${tg.text}</a>`).join('')}</div>
         <div class="hw-section">
-          <div class="hw-label">Notes</div>
-          <textarea class="hw-input ${hasNote}" rows="1" placeholder="Notes for this session..." oninput="autoGrow(this)" onchange="saveNote(${mod},${ses},this)">${note}</textarea>
+          <div class="hw-label">Homework / notes</div>
+          <textarea class="hw-input ${hasNote}" rows="1" placeholder="Notes..." oninput="autoGrow(this)" onchange="saveNote(${mod},${ses},this)">${note}</textarea>
         </div>
       </div>
     </div>`;
@@ -736,7 +716,7 @@ for (let mod = 1; mod <= MODULES; mod++) {
       <div class="mod-num ${done === 4 ? 'complete' : ''}" id="mod-num-${mod}">${mod}</div>
       <div class="mod-info">
         <div class="mod-title">Module ${mod}</div>
-        <div class="mod-sub">4 sessions · 200 minutes</div>
+        <div class="mod-sub">4 · 200 minutes</div>
       </div>
       <div class="mod-right">
         <div class="mod-bar-wrap">

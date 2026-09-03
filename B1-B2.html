@@ -105,6 +105,19 @@
   .header-progress { display: flex; align-items: center; gap: 10px; }
   .header-pct { font-family: var(--font-display); font-size: 22px; font-weight: 700; color: var(--text); }
   .header-bar-bg { width: 120px; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; }
+  .header-io { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  .header-io-btn {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    border: 1px solid var(--accent);
+    background: transparent;
+    color: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.15s;
+  }
+  .header-io-btn:hover { background: var(--accent-soft); }
   .header-bar-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width 0.4s ease; }
 
   /* Main */
@@ -327,6 +340,8 @@
     .stats { grid-template-columns: repeat(2, 1fr); }
     .header-bar-bg { width: 80px; }
     .session { grid-template-columns: 40px 64px 1fr; gap: 8px; }
+    .header-inner { flex-wrap: wrap; row-gap: 10px; }
+    .header-io-btn { width: 26px; height: 26px; font-size: 12px; }
   }
 </style>
 </head>
@@ -352,6 +367,11 @@
         <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);text-align:right;margin-top:3px;" id="hdr-count">0 / 260</div>
       </div>
     </div>
+    <div class="header-io">
+      <button class="header-io-btn" onclick="exportProgress()" title="Export progress">⬇</button>
+      <button class="header-io-btn" onclick="document.getElementById('import-file').click()" title="Import progress">⬆</button>
+      <input type="file" id="import-file" accept=".json" style="display:none" onchange="importProgress(event)">
+    </div>
   </div>
 </header>
 
@@ -370,6 +390,15 @@
     <button class="filter-btn" onclick="filterModules('complete', this)">Completed</button>
     <button class="filter-btn" onclick="filterModules('inprogress', this)">In progress</button>
     <button class="expand-all" onclick="toggleAll()">Expand all</button>
+  </div>
+
+  <div class="filter-bar" style="margin-top:8px;">
+    <span style="font-family:var(--font-mono);font-size:12px;color:var(--text-muted);align-self:center;">
+      Student: <strong id="student-name-display" style="color:var(--text);">—</strong>
+    </span>
+    <button class="filter-btn" onclick="changeStudentName()">Change name</button>
+    <button class="expand-all" onclick="syncAllToSheet()">Sync all now</button>
+    <span id="sync-status" style="font-family:var(--font-mono);font-size:11px;color:var(--text-faint);align-self:center;"></span>
   </div>
 
   <div id="modules-container"></div>
@@ -415,10 +444,10 @@ const SESSION_TYPES = [
 
 // Grammar — 4 resources, maps 1:1 to session letters A-D
 const GRAMMATICA = [
-  {text: "Van Dale Grammatica + Grammatica Videos", parts: [{text: "Van Dale Grammatica", url: "https://drive.google.com/file/d/1cw_7lbItLjiBaVvGcoFpH7KUPOg620KT/view?usp=drive_link"}, {text: "Grammatica Videos", url: "https://www.youtube.com/@ArnoudKuijpers"}]},
+  {text: "Van Dale Grammatica + Grammatica in gebruik", parts: [{text: "Van Dale Grammatica", url: "https://drive.google.com/file/d/1cw_7lbItLjiBaVvGcoFpH7KUPOg620KT/view?usp=drive_link"}, {text: "Grammatica Videos", url: "https://www.youtube.com/@ArnoudKuijpers"}, {text: "Grammatica in gebruik", url: "https://drive.google.com/file/d/1EPMd0cMuuHdQwd_VQxOLzQ5wnXQlNKNX/view?usp=drive_link"}]},
   {text: "Regels voor de officiële spelling", url: "https://drive.google.com/file/d/14ZiBnCheV8Xq9GOG8zhrjNBnYKrmy2g5/view?usp=drive_link"},
   {text: "Schrijven op B2 Niveau", url: "https://drive.google.com/file/d/1Af-QLX0I9dJy6V7Mns3XcfCUuzXd0kch/view?usp=drive_link"},
-  {text: "Dictees + Grammatica in gebruik", parts: [{text: "Dictees", url: "https://onzetaal.nl/taalloket/oefenen-voor-dictees"}, {text: "Grammatica in gebruik", url: "https://drive.google.com/file/d/1EPMd0cMuuHdQwd_VQxOLzQ5wnXQlNKNX/view?usp=drive_link"}]}
+  {text: "Dictees", url: "https://onzetaal.nl/taalloket/oefenen-voor-dictees"}
 ];
 
 // Workbooks — 2 resources, rotate across every session
@@ -434,6 +463,143 @@ let state = {};
 try { state = JSON.parse(localStorage.getItem('td_b1b2') || '{}'); } catch(e) {}
 
 function save() { try { localStorage.setItem('td_b1b2', JSON.stringify(state)); } catch(e) {} }
+
+// ---- Google Sheets sync ----
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbywuYKQWhfMW1GfnOnJWmI7vkk0rZ3YnDj41I2UMjxHaru0Mh1s30jKoesqZyqRvf-Q/exec';
+const STUDENT_KEY = 'td_b1b2_student';
+const TRACKER_NAME = 'B1-B2 Algemeen';
+
+function getStudentName() {
+  let name = localStorage.getItem(STUDENT_KEY);
+  if (!name) {
+    name = prompt('Voer je naam in (voor het bijhouden van je voortgang):');
+    if (name && name.trim()) {
+      name = name.trim();
+      localStorage.setItem(STUDENT_KEY, name);
+    } else {
+      name = '';
+    }
+  }
+  updateStudentDisplay();
+  return name;
+}
+
+function changeStudentName() {
+  const current = localStorage.getItem(STUDENT_KEY) || '';
+  const name = prompt('Naam:', current);
+  if (name && name.trim()) {
+    localStorage.setItem(STUDENT_KEY, name.trim());
+    updateStudentDisplay();
+  }
+}
+
+function updateStudentDisplay() {
+  const el = document.getElementById('student-name-display');
+  if (el) el.textContent = localStorage.getItem(STUDENT_KEY) || '—';
+}
+
+function setSyncStatus(text) {
+  const el = document.getElementById('sync-status');
+  if (el) el.textContent = text;
+}
+
+function syncRow(mod, ses) {
+  const student = localStorage.getItem(STUDENT_KEY);
+  if (!student || !SHEET_URL) return;
+  const t = SESSION_TYPES[ses - 1];
+  const chkKey = 'chk_' + mod + '_' + ses;
+  const noteKey = 'note_' + mod + '_' + ses;
+  const payload = {
+    tracker: TRACKER_NAME,
+    student: student,
+    mod: mod,
+    ses: ses,
+    type: t.letter,
+    sesNum: (mod - 1) * 4 + ses,
+    checked: !!state[chkKey],
+    note: state[noteKey] || ''
+  };
+  setSyncStatus('Syncing…');
+  fetch(SHEET_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(payload)
+  }).then(() => setSyncStatus('Synced ✓'))
+    .catch(() => setSyncStatus('Sync failed — will retry next change'));
+}
+
+function syncAllToSheet() {
+  const student = getStudentName();
+  if (!student) return;
+  const batch = [];
+  for (let mod = 1; mod <= 32; mod++) {
+    for (let ses = 1; ses <= 4; ses++) {
+      const chkKey = 'chk_' + mod + '_' + ses;
+      const noteKey = 'note_' + mod + '_' + ses;
+      if (state[chkKey] || (state[noteKey] || '').trim()) {
+        const t = SESSION_TYPES[ses - 1];
+        batch.push({
+          tracker: TRACKER_NAME,
+          student: student,
+          mod: mod,
+          ses: ses,
+          type: t.letter,
+          sesNum: (mod - 1) * 4 + ses,
+          checked: !!state[chkKey],
+          note: state[noteKey] || ''
+        });
+      }
+    }
+  }
+  if (!batch.length) {
+    setSyncStatus('Nothing to sync yet');
+    return;
+  }
+  setSyncStatus('Syncing ' + batch.length + ' items…');
+  fetch(SHEET_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify({ batch: batch })
+  }).then(() => setSyncStatus('Synced ' + batch.length + ' items ✓'))
+    .catch(() => setSyncStatus('Sync failed'));
+}
+
+
+function exportProgress() {
+  const blob = new Blob([JSON.stringify(state, null, 2)], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const today = new Date().toISOString().slice(0, 10);
+  a.href = url;
+  a.download = 'talkingdutch-b1b2-progress-' + today + '.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function importProgress(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const imported = JSON.parse(e.target.result);
+      if (typeof imported !== 'object' || imported === null || Array.isArray(imported)) {
+        throw new Error('Invalid file');
+      }
+      state = imported;
+      save();
+      location.reload();
+    } catch (err) {
+      alert('Could not load this file — make sure it\'s a progress file exported from this tracker.');
+    }
+    event.target.value = '';
+  };
+  reader.readAsText(file);
+}
+
+
 
 function autoGrow(el) {
   el.style.height = 'auto';
@@ -493,6 +659,7 @@ function toggleSession(mod, ses, el) {
   save();
   updateGlobal();
   updateModuleUI(mod);
+  syncRow(mod, ses);
 }
 
 function saveNote(mod, ses, el) {
@@ -500,6 +667,7 @@ function saveNote(mod, ses, el) {
   if (el.value.trim()) el.classList.add('has-note');
   else el.classList.remove('has-note');
   save();
+  syncRow(mod, ses);
 }
 
 function toggleModule(mod) {
@@ -573,7 +741,7 @@ for (let mod = 1; mod <= MODULES; mod++) {
         <span class="ses-num-label">#${sesNum}</span>
       </div>
       <div class="ses-type-col">
-        <div class="ses-letter">${t.letter}</div>
+        <div class="ses-letter">Session ${t.letter}</div>
         <div class="ses-abs">50 min</div>
       </div>
       <div class="ses-content">
@@ -617,6 +785,7 @@ for (let mod = 1; mod <= MODULES; mod++) {
 
 document.querySelectorAll('.hw-input').forEach(autoGrow);
 updateGlobal();
+getStudentName();
 </script>
 </body>
 </html>
