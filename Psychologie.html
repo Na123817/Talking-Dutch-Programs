@@ -822,12 +822,16 @@
   <section class="panel" id="panel-progress">
     <div class="section-head">
       <h2>Voortgang</h2>
-      <p>Wordt lokaal in je browser bewaard (niet gedeeld, niet verzonden). Vink sessies af op het tabblad &ldquo;De 26 modules&rdquo; — dit overzicht werkt automatisch mee.</p>
+      <p>Wordt lokaal in je browser bewaard, en gesynchroniseerd naar een gedeelde voortgangs-sheet. Vink sessies af op het tabblad &ldquo;De 26 modules&rdquo; — dit overzicht werkt automatisch mee.</p>
     </div>
     <div class="progress-bar-wrap">
       <div class="progress-label"><span id="progress-count">0 / 104 sessies afgerond</span><span id="progress-pct">0%</span></div>
       <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
-      <div style="margin-top:16px;"><button class="reset-btn" id="reset-btn">Voortgang wissen</button></div>
+      <div style="margin-top:16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+        <button class="reset-btn" id="reset-btn">Voortgang wissen</button>
+        <button class="reset-btn" onclick="syncAllToSheet()">Sync all now</button>
+        <span id="sync-status" style="font-family:monospace;font-size:12px;"></span>
+      </div>
     </div>
   </section>
 
@@ -1114,6 +1118,7 @@
     updateModuleTag(modN);
     saveProgress(progress);
     updateProgressBar();
+    syncRow(id);
   });
 
   listEl.addEventListener("input", function (e) {
@@ -1121,7 +1126,73 @@
     var key = e.target.dataset.note;
     if (e.target.value.trim()) { progress[key] = e.target.value; } else { delete progress[key]; }
     saveProgress(progress);
+    syncRow(key.replace("note_", ""));
   });
+
+  /* ---------- Google Sheets sync ---------- */
+  var SHEET_URL = 'https://script.google.com/macros/s/AKfycbyZst2FzeZqGNiOsK8_GIItfrWJn8E1t22N_dtYHsJGizB6aAQKlgcPOCz8NVEkj6nNYA/exec';
+  var TRACKER_NAME = 'Psychologie';
+  var STUDENT_NAME = 'Psychologie Student';
+
+  function setSyncStatus(text) {
+    var el = document.getElementById('sync-status');
+    if (el) el.textContent = text;
+  }
+
+  function findModuleAndSession(id) {
+    var m2 = id.match(/^m(\d+)s(\d+)$/);
+    if (!m2) return null;
+    var modNum = parseInt(m2[1], 10), sesIdx = parseInt(m2[2], 10);
+    var found = null;
+    modules.forEach(function (m) { if (m.n === modNum) found = m; });
+    if (!found) return null;
+    return { mod: found, modNum: modNum, sesIdx: sesIdx, sess: found.s[sesIdx] };
+  }
+
+  function buildPayload(id) {
+    var f = findModuleAndSession(id);
+    if (!f) return null;
+    var focus = (f.sess && f.sess[0] ? f.sess[0] : '').replace(/<[^>]+>/g, '');
+    var bron = (f.sess && f.sess[2] ? f.sess[2] : '');
+    return {
+      tracker: TRACKER_NAME,
+      student: STUDENT_NAME,
+      mod: f.modNum,
+      ses: f.sesIdx + 1,
+      type: LETTERS[f.sesIdx],
+      sesNum: (f.modNum - 1) * 4 + (f.sesIdx + 1),
+      checked: !!progress[id],
+      note: progress['note_' + id] || '',
+      materials: (focus ? 'Focus: ' + focus : '') + (bron ? ' | Bron: ' + bron : '')
+    };
+  }
+
+  function syncRow(id) {
+    var payload = buildPayload(id);
+    if (!payload) return;
+    setSyncStatus('Syncing…');
+    fetch(SHEET_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) })
+      .then(function () { setSyncStatus('Synced ✓'); })
+      .catch(function () { setSyncStatus('Sync failed — will retry next change'); });
+  }
+
+  window.syncAllToSheet = function () {
+    var batch = [];
+    modules.forEach(function (m) {
+      m.s.forEach(function (sess, i) {
+        var id = 'm' + m.n + 's' + i;
+        if (progress[id] || (progress['note_' + id] || '').trim()) {
+          var payload = buildPayload(id);
+          if (payload) batch.push(payload);
+        }
+      });
+    });
+    if (!batch.length) { setSyncStatus('Nothing to sync yet'); return; }
+    setSyncStatus('Syncing ' + batch.length + ' items…');
+    fetch(SHEET_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ batch: batch }) })
+      .then(function () { setSyncStatus('Synced ' + batch.length + ' items ✓'); })
+      .catch(function () { setSyncStatus('Sync failed'); });
+  };
 
   function updateProgressBar() {
     var done = 0;

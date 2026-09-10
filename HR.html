@@ -224,6 +224,11 @@ button.reset:hover{border-color:var(--accent);color:var(--accent)}
   <p class="note">Register around module 19 so the exam falls shortly after module 24.</p>
 </section>
 
+<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:12px 0;font-family:monospace;font-size:12px;">
+  <span>Student: <strong>HR Student</strong></span>
+  <button class="reset" onclick="syncAllToSheet()">Sync all now</button>
+  <span id="sync-status"></span>
+</div>
 <footer>
   <span class="brand"><b>Talking Dutch</b> — talkingdutch.com</span>
   <button class="reset" id="reset">Clear all progress</button>
@@ -444,13 +449,81 @@ app.addEventListener('change',e=>{
   if(!e.target.checked)delete state[id];
   document.querySelector(`tr[data-row="${id}"]`).classList.toggle('checked',e.target.checked);
   store.set(state); refresh();
+  syncRow(id);
 });
 app.addEventListener('input',e=>{
   if(!e.target.classList.contains('hw-input'))return;
   const key=e.target.dataset.note;
   if(e.target.value.trim()){ state[key]=e.target.value; } else { delete state[key]; }
   store.set(state);
+  syncRow(key.replace('note_',''));
 });
+
+/* ---------- Google Sheets sync ---------- */
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyZst2FzeZqGNiOsK8_GIItfrWJn8E1t22N_dtYHsJGizB6aAQKlgcPOCz8NVEkj6nNYA/exec';
+const TRACKER_NAME = 'HR';
+const STUDENT_NAME = 'HR Student';
+
+function setSyncStatus(text){
+  const el=document.getElementById('sync-status');
+  if(el) el.textContent=text;
+}
+
+function findModuleAndSession(id){
+  const m2=id.match(/^m(\d+)s(\d+)$/);
+  if(!m2) return null;
+  const modNum=parseInt(m2[1],10), sesIdx=parseInt(m2[2],10);
+  let found=null;
+  PHASES.forEach(p=>{ p.m.forEach(m=>{ if(m.n===modNum) found=m; }); });
+  if(!found) return null;
+  return { mod: found, modNum, sesIdx, sess: found.s[sesIdx] };
+}
+
+function buildPayload(id){
+  const f=findModuleAndSession(id);
+  if(!f) return null;
+  const focus=(f.sess&&f.sess[0]?f.sess[0]:'').replace(/<[^>]+>/g,'');
+  return {
+    tracker: TRACKER_NAME,
+    student: STUDENT_NAME,
+    mod: f.modNum,
+    ses: f.sesIdx+1,
+    type: 'ABCD'[f.sesIdx],
+    sesNum: (f.modNum-1)*4+(f.sesIdx+1),
+    checked: !!state[id],
+    note: state['note_'+id] || '',
+    materials: 'Materiaal: ' + (f.mod.mat||'') + (focus?' | Focus: '+focus:'')
+  };
+}
+
+function syncRow(id){
+  const payload=buildPayload(id);
+  if(!payload) return;
+  setSyncStatus('Syncing…');
+  fetch(SHEET_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)})
+    .then(()=>setSyncStatus('Synced ✓'))
+    .catch(()=>setSyncStatus('Sync failed — will retry next change'));
+}
+
+function syncAllToSheet(){
+  const batch=[];
+  PHASES.forEach(p=>{
+    p.m.forEach(m=>{
+      m.s.forEach((sess,i)=>{
+        const id='m'+m.n+'s'+i;
+        if(state[id] || (state['note_'+id]||'').trim()){
+          const payload=buildPayload(id);
+          if(payload) batch.push(payload);
+        }
+      });
+    });
+  });
+  if(!batch.length){ setSyncStatus('Nothing to sync yet'); return; }
+  setSyncStatus('Syncing '+batch.length+' items…');
+  fetch(SHEET_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({batch:batch})})
+    .then(()=>setSyncStatus('Synced '+batch.length+' items ✓'))
+    .catch(()=>setSyncStatus('Sync failed'));
+}
 document.getElementById('reset').addEventListener('click',()=>{
   if(!confirm('Clear all progress? This cannot be undone.'))return;
   state={}; store.set(state);
