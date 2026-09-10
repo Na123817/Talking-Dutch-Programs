@@ -392,6 +392,14 @@
     <button class="expand-all" onclick="toggleAll()">Expand all</button>
   </div>
 
+  <div class="filter-bar" style="margin-top:8px;">
+    <span style="font-family:var(--font-mono);font-size:12px;color:var(--text-muted);align-self:center;">
+      Student: <strong style="color:var(--text);">Ella</strong>
+    </span>
+    <button class="expand-all" onclick="syncAllToSheet()">Sync all now</button>
+    <span id="sync-status" style="font-family:var(--font-mono);font-size:11px;color:var(--text-faint);align-self:center;"></span>
+  </div>
+
   <div id="modules-container"></div>
 
 </main>
@@ -451,9 +459,94 @@ const TOTAL = 260;
 const MODULES = 65;
 
 let state = {};
-try { state = JSON.parse(localStorage.getItem('td_b1b2') || '{}'); } catch(e) {}
+try { state = JSON.parse(localStorage.getItem('td_b1b2_ella') || '{}'); } catch(e) {}
 
-function save() { try { localStorage.setItem('td_b1b2', JSON.stringify(state)); } catch(e) {} }
+function save() { try { localStorage.setItem('td_b1b2_ella', JSON.stringify(state)); } catch(e) {} }
+
+// ---- Google Sheets sync ----
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyZst2FzeZqGNiOsK8_GIItfrWJn8E1t22N_dtYHsJGizB6aAQKlgcPOCz8NVEkj6nNYA/exec';
+const TRACKER_NAME = 'B1-B2 Algemeen';
+const STUDENT_NAME = 'Ella';
+
+function buildMaterials(ses) {
+  try {
+    const t = SESSION_TYPES[ses - 1];
+    const g = GRAMMATICA[ses - 1];
+    const w = WERKBOEKEN[ses - 1];
+    const tagsStr = t && t.tags ? t.tags.map(function (tag) { return tag.text; }).join(', ') : '';
+    const wbStr = w ? (w.parts ? w.parts.map(function (p) { return w.text + ' ' + p.text; }).join(', ') : w.text) : '';
+    const grStr = g ? g.text : '';
+    return 'Content: ' + tagsStr + ' | Grammatica: ' + grStr + ' | Werkboek: ' + wbStr;
+  } catch (e) {
+    return '';
+  }
+}
+
+function setSyncStatus(text) {
+  const el = document.getElementById('sync-status');
+  if (el) el.textContent = text;
+}
+
+function syncRow(mod, ses) {
+  if (!SHEET_URL) return;
+  const t = SESSION_TYPES[ses - 1];
+  const chkKey = 'chk_' + mod + '_' + ses;
+  const noteKey = 'note_' + mod + '_' + ses;
+  const payload = {
+    tracker: TRACKER_NAME,
+    student: STUDENT_NAME,
+    mod: mod,
+    ses: ses,
+    type: t.letter,
+    sesNum: (mod - 1) * 4 + ses,
+    checked: !!state[chkKey],
+    note: state[noteKey] || '',
+    materials: buildMaterials(ses)
+  };
+  setSyncStatus('Syncing…');
+  fetch(SHEET_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(payload)
+  }).then(() => setSyncStatus('Synced ✓'))
+    .catch(() => setSyncStatus('Sync failed — will retry next change'));
+}
+
+function syncAllToSheet() {
+  const batch = [];
+  for (let mod = 1; mod <= 32; mod++) {
+    for (let ses = 1; ses <= 4; ses++) {
+      const chkKey = 'chk_' + mod + '_' + ses;
+      const noteKey = 'note_' + mod + '_' + ses;
+      if (state[chkKey] || (state[noteKey] || '').trim()) {
+        const t = SESSION_TYPES[ses - 1];
+        batch.push({
+          tracker: TRACKER_NAME,
+          student: STUDENT_NAME,
+          mod: mod,
+          ses: ses,
+          type: t.letter,
+          sesNum: (mod - 1) * 4 + ses,
+          checked: !!state[chkKey],
+          note: state[noteKey] || '',
+          materials: buildMaterials(ses)
+        });
+      }
+    }
+  }
+  if (!batch.length) {
+    setSyncStatus('Nothing to sync yet');
+    return;
+  }
+  setSyncStatus('Syncing ' + batch.length + ' items…');
+  fetch(SHEET_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify({ batch: batch })
+  }).then(() => setSyncStatus('Synced ' + batch.length + ' items ✓'))
+    .catch(() => setSyncStatus('Sync failed'));
+}
+
 
 function exportProgress() {
   const blob = new Blob([JSON.stringify(state, null, 2)], {type: 'application/json'});
@@ -549,6 +642,7 @@ function toggleSession(mod, ses, el) {
   save();
   updateGlobal();
   updateModuleUI(mod);
+  syncRow(mod, ses);
 }
 
 function saveNote(mod, ses, el) {
@@ -556,6 +650,7 @@ function saveNote(mod, ses, el) {
   if (el.value.trim()) el.classList.add('has-note');
   else el.classList.remove('has-note');
   save();
+  syncRow(mod, ses);
 }
 
 function toggleModule(mod) {
