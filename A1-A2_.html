@@ -486,6 +486,21 @@ function setSyncStatus(text) {
   if (el) el.textContent = text;
 }
 
+
+function buildMaterials(ses) {
+  try {
+    const t = SESSION_TYPES[ses - 1];
+    const g = GRAMMATICA[ses - 1];
+    const w = WERKBOEKEN[ses - 1];
+    const tagsStr = t && t.tags ? t.tags.map(function (tag) { return tag.text; }).join(', ') : '';
+    const wbStr = w ? (w.parts ? w.parts.map(function (p) { return w.text + ' ' + p.text; }).join(', ') : w.text) : '';
+    const grStr = g ? g.text : '';
+    return 'Content: ' + tagsStr + ' | Grammatica: ' + grStr + ' | Werkboek: ' + wbStr;
+  } catch (e) {
+    return '';
+  }
+}
+
 function syncRow(mod, ses) {
   const student = localStorage.getItem(STUDENT_KEY);
   if (!student || !SHEET_URL) return;
@@ -500,7 +515,8 @@ function syncRow(mod, ses) {
     type: t.letter,
     sesNum: (mod - 1) * 4 + ses,
     checked: !!state[chkKey],
-    note: state[noteKey] || ''
+    note: state[noteKey] || '',
+    materials: buildMaterials(ses)
   };
   setSyncStatus('Syncing…');
   fetch(SHEET_URL, {
@@ -529,7 +545,8 @@ function syncAllToSheet() {
           type: t.letter,
           sesNum: (mod - 1) * 4 + ses,
           checked: !!state[chkKey],
-          note: state[noteKey] || ''
+          note: state[noteKey] || '',
+          materials: buildMaterials(ses)
         });
       }
     }
