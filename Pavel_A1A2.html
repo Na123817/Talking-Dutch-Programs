@@ -424,7 +424,7 @@ const SESSION_TYPES = [
 const GRAMMATICA = [
   {text: "Van Dale Grammatica", url: "https://drive.google.com/file/d/1cw_7lbItLjiBaVvGcoFpH7KUPOg620KT/view?usp=drive_link"},
   {text: "Dictees", url: "https://onzetaal.nl/taalloket/oefenen-voor-dictees"},
-  {text: "Grammatica in gebruik", url: "https://drive.google.com/file/d/1EPMd0cMuuHdQwd_VQxOLzQ5wnXQlNKNX/view"},
+  {text: "Grammatica in gebruik", url: "https://drive.google.com/file/d/1EPMd0cMuuHdQwd_VQxOLzQ5wnXQlNKNX/view?usp=drive_link"},
   {text: "Grammatica Videos + Regels voor de officiële spelling", parts: [{text: "Grammatica Videos", url: "https://www.youtube.com/@ArnoudKuijpers"}, {text: "Regels voor de officiële spelling", url: "https://drive.google.com/file/d/14ZiBnCheV8Xq9GOG8zhrjNBnYKrmy2g5/view?usp=drive_link"}]}
 ];
 
@@ -442,9 +442,9 @@ const WERKBOEKEN = [
 ];
 
 let state = {};
-try { state = JSON.parse(localStorage.getItem('td_a1a2_50') || '{}'); } catch(e) {}
+try { state = JSON.parse(localStorage.getItem('td_a1a2_pavel') || '{}'); } catch(e) {}
 
-function save() { try { localStorage.setItem('td_a1a2_50', JSON.stringify(state)); } catch(e) {} }
+function save() { try { localStorage.setItem('td_a1a2_pavel', JSON.stringify(state)); } catch(e) {} }
 
 // ---- Google Sheets sync ----
 const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyZst2FzeZqGNiOsK8_GIItfrWJn8E1t22N_dtYHsJGizB6aAQKlgcPOCz8NVEkj6nNYA/exec';
