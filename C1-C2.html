@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Talking Dutch A1-A2</title>
+<title>Talking Dutch C1-C2</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -339,17 +339,17 @@
         <span class="cursor-bar"></span>
         Talking Dutch
         <span class="header-level-badges">
-          <span class="level-badge">A1</span>
-          <span class="level-badge">A2</span>
+          <span class="level-badge">C1</span>
+          <span class="level-badge">C2</span>
         </span>
       </div>
-      <div class="header-sub">32 modules · 128 · ±128 hours</div>
+      <div class="header-sub">60 modules · 240 sessions · ±200 hours</div>
     </div>
     <div class="header-progress">
       <div class="header-pct" id="hdr-pct">0%</div>
       <div>
         <div class="header-bar-bg"><div class="header-bar-fill" id="hdr-bar" style="width:0%"></div></div>
-        <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);text-align:right;margin-top:3px;" id="hdr-count">0 / 128</div>
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);text-align:right;margin-top:3px;" id="hdr-count">0 / 240</div>
       </div>
     </div>
   </div>
@@ -359,7 +359,7 @@
 
   <div class="stats">
     <div class="stat-card"><div class="stat-num" id="s-done">0</div><div class="stat-label">Completed</div></div>
-    <div class="stat-card"><div class="stat-num" id="s-left">128</div><div class="stat-label">Remaining</div></div>
+    <div class="stat-card"><div class="stat-num" id="s-left">240</div><div class="stat-label">Remaining</div></div>
     <div class="stat-card"><div class="stat-num" id="s-hours">0h</div><div class="stat-label">Hours done</div></div>
     <div class="stat-card"><div class="stat-num" id="s-modules">0</div><div class="stat-label">Modules done</div></div>
   </div>
@@ -374,8 +374,9 @@
 
   <div class="filter-bar" style="margin-top:8px;">
     <span style="font-family:var(--font-mono);font-size:12px;color:var(--text-muted);align-self:center;">
-      Student: <strong style="color:var(--text);">Safira</strong>
+      Student: <strong id="student-name-display" style="color:var(--text);">—</strong>
     </span>
+    <button class="filter-btn" onclick="changeStudentName()">Change name</button>
     <button class="expand-all" onclick="syncAllToSheet()">Sync all now</button>
     <span id="sync-status" style="font-family:var(--font-mono);font-size:11px;color:var(--text-faint);align-self:center;"></span>
   </div>
@@ -385,74 +386,115 @@
 </main>
 
 <script>
-// Podcasts / News / Trivia+Literature / Practice exams — rotate by session letter A-D
+// Podcasts / Series (NOS) / News+Popular science / Practice exams — rotate by session letter A-D
 const SESSION_TYPES = [
   {
     letter: "A",
     tags: [
-      {text: "Easy Dutch Podcasts · 8 min", cls: "tag-p", url: "https://www.easydutchonline.com/podcast"},
-      {text: "NOS Nieuws · 9 min", cls: "tag-t", url: "https://nos.nl"},
-      {text: "A2 - Lezen · 8 min", cls: "tag-c", url: "https://www.inburgeren.nl/examen-doen/oefenen.jsp"},
+      {text: "EOS · 9 min", cls: "tag-a", url: "https://www.eoswetenschap.eu/"},
+      {text: "Studytube · 8 min", cls: "tag-a", url: "https://www.youtube.com/@StudytubeYT"},
     ]
   },
   {
     letter: "B",
     tags: [
-      {text: "Easy Dutch · 4 min", cls: "tag-p", url: "https://www.youtube.com/@EasyDutch"},
-      {text: "NOS Nieuws · 8 min", cls: "tag-t", url: "https://nos.nl"},
-      {text: "Korte verhalen · 5 min", cls: "tag-a", url: "https://drive.google.com/file/d/1TC1WdVKc2_cuiPLmBdXvMPhvTVM31hEW/view?usp=drive_link"},
-      {text: "A2 - Luisteren · 8 min", cls: "tag-c", url: "https://www.inburgeren.nl/examen-doen/oefenen.jsp"},
+      {text: "De slimste mens · 9 min", cls: "tag-a", url: "https://npo.nl/start/serie/de-slimste-mens/afleveringen/seizoen-29"},
+      {text: "VPRO Tegenlicht · 8 min", cls: "tag-a", url: "https://tegenlicht.vpro.nl/"},
+      {text: "CNaVT · 8 min", cls: "tag-c", url: "https://cnavt.org/"},
     ]
   },
   {
     letter: "C",
     tags: [
-      {text: "NOS Nieuws · 9 min", cls: "tag-t", url: "https://nos.nl"},
-      {text: "KNM · 8 min", cls: "tag-a", url: "https://knmoefenen.nl/en/dashboard"},
-      {text: "Dictees · 5 min", cls: "tag-a", url: "https://onzetaal.nl/taalloket/oefenen-voor-dictees"},
-      {text: "A2 - Schrijven · 8 min", cls: "tag-c", url: "https://www.inburgeren.nl/examen-doen/oefenen.jsp"},
+      {text: "Quest · 9 min", cls: "tag-p", url: "https://open.spotify.com/show/2A99d13waj7Vuv56Nc3sFB"},
+      {text: "NOS Journaal · 8 min", cls: "tag-t", url: "https://npo.nl/start/serie/nos-journaal/afleveringen"},
     ]
   },
   {
     letter: "D",
     tags: [
-      {text: "NOS Journaal · 9 min", cls: "tag-t", url: "https://over.nos.nl/onze-programmas/journaal-in-makkelijke-taal/"},
-      {text: "De slimste mens · 8 min", cls: "tag-a", url: "https://npo.nl/start/serie/de-slimste-mens/afleveringen/seizoen-29"},
-      {text: "A2 - Spreken · 8 min", cls: "tag-c", url: "https://www.inburgeren.nl/examen-doen/oefenen.jsp"},
+      {text: "NPO Luister · 8 min", cls: "tag-t", url: "https://npo.nl/luister"},
+      {text: "Buitenhof · 9 min", cls: "tag-t", url: "https://www.vpro.nl/buitenhof"},
+      {text: "CNaVT · 8 min", cls: "tag-c", url: "https://cnavt.org/"},
     ]
-  }
+  },
 ];
 
-// Grammar — fixed per session letter: A=Van Dale, B=Dictees, C=Grammatica in gebruik, D=Videos
-const GRAMMATICA = [
-  {text: "Grammatica in gebruik + Videos", parts: [{text: "Grammatica in gebruik", url: "https://drive.google.com/file/d/1EPMd0cMuuHdQwd_VQxOLzQ5wnXQlNKNX/view?usp=drive_link"}, {text: "Videos", url: "https://www.youtube.com/@dutchtoday"}]},
-  {text: "Van Dale Grammatica + Videos", parts: [{text: "Van Dale Grammatica", url: "https://drive.google.com/file/d/1cw_7lbItLjiBaVvGcoFpH7KUPOg620KT/view?usp=drive_link"}, {text: "Videos", url: "https://www.youtube.com/@dutchtoday"}]},
-  {text: "Grammatica in gebruik + Videos", parts: [{text: "Grammatica in gebruik", url: "https://drive.google.com/file/d/1EPMd0cMuuHdQwd_VQxOLzQ5wnXQlNKNX/view?usp=drive_link"}, {text: "Videos", url: "https://www.youtube.com/@dutchtoday"}]},
-  {text: "Van Dale Grammatica + Videos", parts: [{text: "Van Dale Grammatica", url: "https://drive.google.com/file/d/1cw_7lbItLjiBaVvGcoFpH7KUPOg620KT/view?usp=drive_link"}, {text: "Videos", url: "https://www.youtube.com/@dutchtoday"}]}
-];
-
-// Workbooks + audio — fixed per session letter: A=Taalcompleet A1+A2, B=Nederlands in actie, C=Taalcompleet A1+A2, D=Nederlands in actie
-const TAALCOMPLEET_A1A2 = {text: "Taalcompleet A1 + A2", parts: [
-  {text: "A1", url: "https://drive.google.com/file/d/1Zi8l0rhWHcAttqglevjVVtunlrUHqs7N/view?usp=drive_link"},
-  {text: "A2", url: "https://drive.google.com/file/d/1v1O_4rOmOR5WZRlY0sxH559sxPKt1a2q/view?usp=drive_link", audioUrl: "https://www.youtube.com/watch?v=-VeJ75e-mJI&list=PLl74A1LTuUSUaM9kmbs9jtqIWdkkRfnJ3"}
-]};
-const NEDERLANDS_IN_ACTIE = {text: "Nederlands in actie", url: "https://drive.google.com/file/d/1jLGtU6i3ZBP4ZMzobuTUYJ7gJE20vEi4/view?usp=drive_link", audioUrl: "https://www.youtube.com/playlist?list=PLF-qJ8Ed0qHd7ToqP0Jvbq32T8fjeq8PH"};
+// Workbooks/Writing — 2 resources, rotate across every session
 const WERKBOEKEN = [
-  TAALCOMPLEET_A1A2,
-  NEDERLANDS_IN_ACTIE,
-  TAALCOMPLEET_A1A2,
-  NEDERLANDS_IN_ACTIE
+  {text: "Nederlands naar perfectie", url: "https://drive.google.com/file/d/1I_K9c6euNbgna_c_01dxUp_zzK0_Sz4g/view?usp=drive_link"},
+  {text: "Genrespecifiek schrijven in de mens- en maatschappijvakken", url: "https://drive.google.com/file/d/1AGyRnxvWpOt2mobcg8PYTvdycDE0CUy_/view?usp=drive_link"}
 ];
+
+// Grammar — 2 resources, rotate across every session
+const GRAMMATICA = [
+  {parts: [
+    {text: "ANS", url: "https://e-ans.ivdnt.org/topics/pid/topic-15808974804853337"},
+    {text: "Regels voor de officiële spelling", url: "https://drive.google.com/file/d/1l-mYwC5eqhnVcdlUF8l5quT2qe72b5Xv/view?usp=drive_link"}
+  ]},
+  {parts: [
+    {text: "ANS", url: "https://e-ans.ivdnt.org/topics/pid/topic-15808974804853337"},
+    {text: "Regels voor de officiële spelling", url: "https://drive.google.com/file/d/1l-mYwC5eqhnVcdlUF8l5quT2qe72b5Xv/view?usp=drive_link"}
+  ]},
+  {parts: [
+    {text: "ANS", url: "https://e-ans.ivdnt.org/topics/pid/topic-15808974804853337"},
+    {text: "Regels voor de officiële spelling", url: "https://drive.google.com/file/d/1l-mYwC5eqhnVcdlUF8l5quT2qe72b5Xv/view?usp=drive_link"}
+  ]},
+  {parts: [
+    {text: "ANS", url: "https://e-ans.ivdnt.org/topics/pid/topic-15808974804853337"},
+    {text: "Regels voor de officiële spelling", url: "https://drive.google.com/file/d/1l-mYwC5eqhnVcdlUF8l5quT2qe72b5Xv/view?usp=drive_link"}
+  ]}
+];
+
+// Linguistics — fixed in every session
+const TAALKUNDE = [
+  {text: "Kris kras door het Nederlands", url: "https://drive.google.com/file/d/1bPfCIfklRYWpwnq_InSj6EBfL5tPuM3g/view?usp=drive_link"},
+  null,
+  {text: "Basisvaardigheden Academisch Schrijven", url: "https://drive.google.com/file/d/1q71EfKbPJKnWRpsd49sOpC-JavOuUdDo/view?usp=drive_link"},
+  null
+];
+
+const TOTAL = 240;
+const MODULES = 60;
 
 let state = {};
-try { state = JSON.parse(localStorage.getItem('td_a1a2_60_safira') || '{}'); } catch(e) {}
+try { state = JSON.parse(localStorage.getItem('td_c1c2_50') || '{}'); } catch(e) {}
 
-function save() { try { localStorage.setItem('td_a1a2_60_safira', JSON.stringify(state)); } catch(e) {} }
+function save() { try { localStorage.setItem('td_c1c2_50', JSON.stringify(state)); } catch(e) {} }
 
 // ---- Google Sheets sync ----
 const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyZst2FzeZqGNiOsK8_GIItfrWJn8E1t22N_dtYHsJGizB6aAQKlgcPOCz8NVEkj6nNYA/exec';
-const TRACKER_NAME = 'A1-A2';
-const STUDENT_NAME = 'Safira';
+const STUDENT_KEY = 'td_c1c2_student';
+const TRACKER_NAME = 'C1-C2';
+
+function getStudentName() {
+  let name = localStorage.getItem(STUDENT_KEY);
+  if (!name) {
+    name = prompt('Voer je naam in (voor het bijhouden van je voortgang):');
+    if (name && name.trim()) {
+      name = name.trim();
+      localStorage.setItem(STUDENT_KEY, name);
+    } else {
+      name = '';
+    }
+  }
+  updateStudentDisplay();
+  return name;
+}
+
+function changeStudentName() {
+  const current = localStorage.getItem(STUDENT_KEY) || '';
+  const name = prompt('Naam:', current);
+  if (name && name.trim()) {
+    localStorage.setItem(STUDENT_KEY, name.trim());
+    updateStudentDisplay();
+  }
+}
+
+function updateStudentDisplay() {
+  const el = document.getElementById('student-name-display');
+  if (el) el.textContent = localStorage.getItem(STUDENT_KEY) || '—';
+}
 
 function setSyncStatus(text) {
   const el = document.getElementById('sync-status');
@@ -475,13 +517,14 @@ function buildMaterials(ses) {
 }
 
 function syncRow(mod, ses) {
-  if (!SHEET_URL) return;
+  const student = localStorage.getItem(STUDENT_KEY);
+  if (!student || !SHEET_URL) return;
   const t = SESSION_TYPES[ses - 1];
   const chkKey = 'chk_' + mod + '_' + ses;
   const noteKey = 'note_' + mod + '_' + ses;
   const payload = {
     tracker: TRACKER_NAME,
-    student: STUDENT_NAME,
+    student: student,
     mod: mod,
     ses: ses,
     type: t.letter,
@@ -500,6 +543,8 @@ function syncRow(mod, ses) {
 }
 
 function syncAllToSheet() {
+  const student = getStudentName();
+  if (!student) return;
   const batch = [];
   for (let mod = 1; mod <= 32; mod++) {
     for (let ses = 1; ses <= 4; ses++) {
@@ -509,7 +554,7 @@ function syncAllToSheet() {
         const t = SESSION_TYPES[ses - 1];
         batch.push({
           tracker: TRACKER_NAME,
-          student: STUDENT_NAME,
+          student: student,
           mod: mod,
           ses: ses,
           type: t.letter,
@@ -554,18 +599,18 @@ function getModuleDone(mod) {
 
 function updateGlobal() {
   const done = getDone();
-  const pct = Math.round(done / 128 * 100);
+  const pct = Math.round(done / TOTAL * 100);
   const hours = (done * 50 / 60).toFixed(1);
   let modsDone = 0;
-  for (let m = 1; m <= 32; m++) { if (getModuleDone(m) === 4) modsDone++; }
+  for (let m = 1; m <= MODULES; m++) { if (getModuleDone(m) === 4) modsDone++; }
 
   document.getElementById('s-done').textContent = done;
-  document.getElementById('s-left').textContent = 128 - done;
+  document.getElementById('s-left').textContent = TOTAL - done;
   document.getElementById('s-hours').textContent = hours + 'h';
   document.getElementById('s-modules').textContent = modsDone;
   document.getElementById('hdr-pct').textContent = pct + '%';
   document.getElementById('hdr-bar').style.width = pct + '%';
-  document.getElementById('hdr-count').textContent = done + ' / 128';
+  document.getElementById('hdr-count').textContent = done + ' / ' + TOTAL;
 }
 
 function updateModuleUI(mod) {
@@ -581,9 +626,7 @@ function updateModuleUI(mod) {
     if (done === 4) numEl.classList.add('complete');
     else numEl.classList.remove('complete');
   }
-  if (modEl) {
-    modEl.dataset.done = done;
-  }
+  if (modEl) modEl.dataset.done = done;
 }
 
 function toggleSession(mod, ses, el) {
@@ -599,8 +642,7 @@ function toggleSession(mod, ses, el) {
 }
 
 function saveNote(mod, ses, el) {
-  const key = 'note_' + mod + '_' + ses;
-  state[key] = el.value;
+  state['note_' + mod + '_' + ses] = el.value;
   if (el.value.trim()) el.classList.add('has-note');
   else el.classList.remove('has-note');
   save();
@@ -621,11 +663,11 @@ function toggleModule(mod) {
 let allExpanded = false;
 function toggleAll() {
   allExpanded = !allExpanded;
-  for (let m = 1; m <= 32; m++) {
+  for (let m = 1; m <= MODULES; m++) {
     const body = document.getElementById('body-' + m);
     const chev = document.getElementById('chev-' + m);
-    if (body) { body.classList.toggle('open', allExpanded); }
-    if (chev) { chev.classList.toggle('open', allExpanded); }
+    if (body) body.classList.toggle('open', allExpanded);
+    if (chev) chev.classList.toggle('open', allExpanded);
   }
   document.querySelector('.expand-all').textContent = allExpanded ? 'Collapse all' : 'Expand all';
   if (allExpanded) {
@@ -636,7 +678,7 @@ function toggleAll() {
 function filterModules(type, btn) {
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  for (let m = 1; m <= 32; m++) {
+  for (let m = 1; m <= MODULES; m++) {
     const el = document.getElementById('module-' + m);
     if (!el) continue;
     const done = parseInt(el.dataset.done || 0);
@@ -648,10 +690,9 @@ function filterModules(type, btn) {
   }
 }
 
-// Build DOM
 const container = document.getElementById('modules-container');
 
-for (let mod = 1; mod <= 32; mod++) {
+for (let mod = 1; mod <= MODULES; mod++) {
   const done = getModuleDone(mod);
   const pct = Math.round(done / 4 * 100);
   const modEl = document.createElement('div');
@@ -662,8 +703,9 @@ for (let mod = 1; mod <= 32; mod++) {
   const sessionsHTML = [1, 2, 3, 4].map(ses => {
     const t = SESSION_TYPES[ses - 1];
     const sesNum = (mod - 1) * 4 + ses;
-    const wb = WERKBOEKEN[ses - 1];
+    const wb = WERKBOEKEN[(sesNum - 1) % WERKBOEKEN.length];
     const gr = GRAMMATICA[ses - 1];
+    const tk = TAALKUNDE[ses - 1];
     const chkKey = 'chk_' + mod + '_' + ses;
     const noteKey = 'note_' + mod + '_' + ses;
     const checked = state[chkKey] ? 'checked' : '';
@@ -678,22 +720,24 @@ for (let mod = 1; mod <= 32; mod++) {
         <span class="ses-num-label">#${sesNum}</span>
       </div>
       <div class="ses-type-col">
-        <div class="ses-letter">${t.letter}</div>
-        <div class="ses-abs">60 min</div>
+        <div class="ses-letter">Session ${t.letter}</div>
+        <div class="ses-abs">50 min</div>
       </div>
       <div class="ses-content">
         <div class="fixed-line">
-          ${wb.parts
-            ? wb.parts.map(p => `<a href="${p.url}" target="_blank" class="fixed-link">Taalcompleet ${p.text}</a>${p.audioUrl ? ` <a href="${p.audioUrl}" target="_blank" class="fixed-link">+ audio</a>` : ''}`).join(' &nbsp;|&nbsp; ')
-            : `<a href="${wb.url}" target="_blank" class="fixed-link">${wb.text}</a>${wb.audioUrl ? ` <a href="${wb.audioUrl}" target="_blank" class="fixed-link">+ audio</a>` : ''}`}
-          · 15 min &nbsp;|&nbsp;
-          <a href="${gr.url}" target="_blank" class="fixed-link">${gr.text}</a>
-          · 10 min
+          <a href="${wb.url}" target="_blank" class="fixed-link">${wb.text}</a>
+          · 10 min &nbsp;|&nbsp;
+          ${gr.parts
+            ? gr.parts.map(p => `<a href="${p.url}" target="_blank" class="fixed-link">${p.text}</a>`).join(' &nbsp;|&nbsp; ')
+            : `<a href="${gr.url}" target="_blank" class="fixed-link">${gr.text}</a>`}
+          · 6 min${tk ? ` &nbsp;|&nbsp;
+          <a href="${tk.url}" target="_blank" class="fixed-link">${tk.text}</a>
+          · 9 min` : ''}
         </div>
         <div class="tags">${t.tags.map(tg => `<a href="${tg.url}" target="_blank" class="tag ${tg.cls}" style="text-decoration:none;">${tg.text}</a>`).join('')}</div>
         <div class="hw-section">
           <div class="hw-label">Notes</div>
-          <textarea class="hw-input ${hasNote}" rows="1" placeholder="Notes..." oninput="autoGrow(this)" onchange="saveNote(${mod},${ses},this)">${note}</textarea>
+          <textarea class="hw-input ${hasNote}" rows="1" placeholder="Notes for this session..." oninput="autoGrow(this)" onchange="saveNote(${mod},${ses},this)">${note}</textarea>
         </div>
       </div>
     </div>`;
@@ -704,7 +748,7 @@ for (let mod = 1; mod <= 32; mod++) {
       <div class="mod-num ${done === 4 ? 'complete' : ''}" id="mod-num-${mod}">${mod}</div>
       <div class="mod-info">
         <div class="mod-title">Module ${mod}</div>
-        <div class="mod-sub">4 · 240 minutes</div>
+        <div class="mod-sub">4 sessions · 200 minutes</div>
       </div>
       <div class="mod-right">
         <div class="mod-bar-wrap">
@@ -724,6 +768,7 @@ for (let mod = 1; mod <= 32; mod++) {
 
 document.querySelectorAll('.hw-input').forEach(autoGrow);
 updateGlobal();
+getStudentName();
 </script>
 </body>
 </html>

@@ -400,7 +400,7 @@ const SESSION_TYPES = [
     tags: [
       {text: "Easy Dutch · 4 min", cls: "tag-p", url: "https://www.youtube.com/@EasyDutch"},
       {text: "NOS Journaal · 8 min", cls: "tag-t", url: "https://npo.nl/start/serie/nos-journaal-in-makkelijke-taal/afleveringen"},
-      {text: "Verhalen van de brandweer · 5 min", cls: "tag-a", url: "https://drive.google.com/file/d/1NuA4DWRlgrDuw8D8QLNRxpReBFRW_sFP/view?usp=drive_link"},
+      {text: "Korte verhalen · 5 min", cls: "tag-a", url: "https://drive.google.com/file/d/1TC1WdVKc2_cuiPLmBdXvMPhvTVM31hEW/view?usp=drive_link"},
       {text: "Oefenexamen: Luisteren - A2 · 8 min", cls: "tag-c", url: "https://www.inburgeren.nl/examen-doen/oefenen.jsp"},
     ]
   },
@@ -409,6 +409,7 @@ const SESSION_TYPES = [
     tags: [
       {text: "NOS Journaal · 9 min", cls: "tag-t", url: "https://npo.nl/start/serie/nos-journaal-in-makkelijke-taal/afleveringen"},
       {text: "KNM · 8 min", cls: "tag-a", url: "https://knmoefenen.nl/en/dashboard"},
+      {text: "Dictees · 5 min", cls: "tag-a", url: "https://onzetaal.nl/taalloket/oefenen-voor-dictees"},
       {text: "Oefenexamen: Schrijven - A2 · 8 min", cls: "tag-c", url: "https://www.inburgeren.nl/examen-doen/oefenen.jsp"},
     ]
   },
@@ -422,17 +423,17 @@ const SESSION_TYPES = [
   }
 ];
 
-// Grammar — fixed per session letter: A=Van Dale, B=Dictees, C=Grammatica in gebruik, D=Grammatica Videos
+// Grammar — fixed per session letter: A=Van Dale, B=Dictees, C=Grammatica in gebruik, D=Videos
 const GRAMMATICA = [
-  {text: "Van Dale Grammatica", url: "https://drive.google.com/file/d/1cw_7lbItLjiBaVvGcoFpH7KUPOg620KT/view?usp=drive_link"},
-  {text: "Dictees", url: "https://onzetaal.nl/taalloket/oefenen-voor-dictees"},
-  {text: "Grammatica in gebruik", url: "https://drive.google.com/file/d/1EPMd0cMuuHdQwd_VQxOLzQ5wnXQlNKNX/view?usp=drive_link"},
-  {text: "Grammatica Videos", url: "https://www.youtube.com/@learndutchwithkim"}
+  {text: "Grammatica in gebruik + Videos", parts: [{text: "Grammatica in gebruik", url: "https://drive.google.com/file/d/1EPMd0cMuuHdQwd_VQxOLzQ5wnXQlNKNX/view?usp=drive_link"}, {text: "Videos", url: "https://www.youtube.com/@dutchtoday"}]},
+  {text: "Van Dale Grammatica + Videos", parts: [{text: "Van Dale Grammatica", url: "https://drive.google.com/file/d/1cw_7lbItLjiBaVvGcoFpH7KUPOg620KT/view?usp=drive_link"}, {text: "Videos", url: "https://www.youtube.com/@dutchtoday"}]},
+  {text: "Grammatica in gebruik + Videos", parts: [{text: "Grammatica in gebruik", url: "https://drive.google.com/file/d/1EPMd0cMuuHdQwd_VQxOLzQ5wnXQlNKNX/view?usp=drive_link"}, {text: "Videos", url: "https://www.youtube.com/@dutchtoday"}]},
+  {text: "Van Dale Grammatica + Videos", parts: [{text: "Van Dale Grammatica", url: "https://drive.google.com/file/d/1cw_7lbItLjiBaVvGcoFpH7KUPOg620KT/view?usp=drive_link"}, {text: "Videos", url: "https://www.youtube.com/@dutchtoday"}]}
 ];
 
 // Workbooks + audio — fixed per session letter: A=Taalcompleet A1+A2, B=Nederlands in actie, C=Taalcompleet A1+A2, D=Nederlands in actie
 const TAALCOMPLEET_A1A2 = {text: "Taalcompleet A1 + A2", parts: [
-  {text: "A1", url: "https://drive.google.com/file/d/14yHMSH-L7dMT6LpecyKwx2-vArN054LB/view?usp=drivesdk"},
+  {text: "A1", url: "https://drive.google.com/file/d/1Zi8l0rhWHcAttqglevjVVtunlrUHqs7N/view?usp=drive_link"},
   {text: "A2", url: "https://drive.google.com/file/d/1v1O_4rOmOR5WZRlY0sxH559sxPKt1a2q/view?usp=drive_link", audioUrl: "https://www.youtube.com/watch?v=-VeJ75e-mJI&list=PLl74A1LTuUSUaM9kmbs9jtqIWdkkRfnJ3"}
 ]};
 const NEDERLANDS_IN_ACTIE = {text: "Nederlands in actie", url: "https://drive.google.com/file/d/1jLGtU6i3ZBP4ZMzobuTUYJ7gJE20vEi4/view?usp=drive_link", audioUrl: "https://www.youtube.com/playlist?list=PLF-qJ8Ed0qHd7ToqP0Jvbq32T8fjeq8PH"};
@@ -691,7 +692,7 @@ for (let mod = 1; mod <= 32; mod++) {
         </div>
         <div class="tags">${t.tags.map(tg => `<a href="${tg.url}" target="_blank" class="tag ${tg.cls}" style="text-decoration:none;">${tg.text}</a>`).join('')}</div>
         <div class="hw-section">
-          <div class="hw-label">Homework / notes</div>
+          <div class="hw-label">Notes</div>
           <textarea class="hw-input ${hasNote}" rows="1" placeholder="Notes..." oninput="autoGrow(this)" onchange="saveNote(${mod},${ses},this)">${note}</textarea>
         </div>
       </div>
